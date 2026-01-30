@@ -1,0 +1,60 @@
+services:
+  # База данных MySQL
+  db:
+    image: mysql:8.0
+    container_name: wordpress_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${WP_DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${WP_DB_NAME}
+      MYSQL_USER: ${WP_DB_USER}
+      MYSQL_PASSWORD: ${WP_DB_PASSWORD}
+    ports:
+      - "${MYSQL_PORT}:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - wordpress_network
+
+  # WordPress
+  wordpress:
+    image: wordpress:latest
+    container_name: wordpress_app
+    restart: always
+    depends_on:
+      - db
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: ${WP_DB_NAME}
+      WORDPRESS_DB_USER: ${WP_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WP_DB_PASSWORD}
+      WORDPRESS_DEBUG: 1
+    ports:
+      - "${WP_PORT}:80"
+    volumes:
+      - ${WP_CONTENT_PATH}:/var/www/html/wp-content
+      - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+    networks:
+      - wordpress_network
+
+  # phpMyAdmin (опционально, для управления базой данных)
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: wordpress_phpmyadmin
+    restart: always
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: ${WP_DB_ROOT_PASSWORD}
+    ports:
+      - "8080:80"
+    networks:
+      - wordpress_network
+
+volumes:
+  db_data:
+
+networks:
+  wordpress_network:
+    driver: bridge
