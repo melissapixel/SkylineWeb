@@ -16,15 +16,20 @@ A flexible and scalable web platform that can become the basis for any future pr
 ## 📁 Project structure
 ```bash
 my-wordpress-site/
-├── docker-compose.yml # Docker configuration
-├── .env # Environment variables (private)
-├── .env.example # Example environment file
-├── uploads.ini # PHP upload settings
-├── wp-content/ # Plugins, themes, uploads
+├── docker-compose.yml              # Docker configuration
+├── scripts
+│ ├── backup-db.sh                  # Database backup
+│ ├── backup-files.sh               # Backup files (wp-content)
+│ ├── restore-db.sh                 # Restoring the database
+│ └── doc.md                        # Documentation
+├── .env                            # Environment variables (private)
+├── .env.example                    # Example environment file
+├── uploads.ini                     # PHP upload settings
+├── wp-content/                     # Plugins, themes, uploads
 │ ├── plugins/
 │ ├── themes/
 │ └── uploads/
-└── README.md # This file
+└── README.md                       # This file
 ```
 
 ## 🚀 Quick Start
