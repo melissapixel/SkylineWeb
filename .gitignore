@@ -1,0 +1,21 @@
+# Docker volumes
+db_data/
+
+# WordPress core (будет скачиваться автоматически)
+wp-content/uploads/
+
+# Environment variables and secrets
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+wp-admin/
+wp-includes/
+wp-content/uploads/
+wp-config.php
+languages
