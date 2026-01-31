@@ -24,15 +24,21 @@ services:
     depends_on:
       - db
     environment:
-      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
       WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
       WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
       WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
-      WORDPRESS_DEBUG: 1
+      WORDPRESS_TABLE_PREFIX: ${WORDPRESS_TABLE_PREFIX}
+      WORDPRESS_DB_COLLATE: ${WORDPRESS_DB_COLLATE}
+      WORDPRESS_DEBUG: ${WORDPRESS_DEBUG}
     ports:
       - "${WP_PORT}:80"
     volumes:
+    # Монтируем wp-config.php в корень WordPress
+      # - ./wp-config.php:/var/www/html/wp-config.php 
+    # Монтируем папку wp-content для сохранения данных
       - ${WORDPRESS_CONTENT_PATH}:/var/www/html/wp-content
+    # Опционально: настройки PHP
       - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
     networks:
       - wordpress_network
